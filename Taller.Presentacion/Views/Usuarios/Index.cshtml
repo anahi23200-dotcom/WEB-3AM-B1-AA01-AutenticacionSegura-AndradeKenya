@@ -1,0 +1,78 @@
+﻿@model List<Taller.Negocio.Interfaces.UsuarioConRolDto>
+@using Taller.Datos.Seed
+@{
+    ViewData["Title"] = "Gestión de Usuarios";
+}
+
+<div class="mt-4">
+    <h2 class="mb-3">Gestión de Usuarios y Roles</h2>
+
+    @if (TempData["MensajeExito"] != null)
+    {
+        <div class="alert alert-success">@TempData["MensajeExito"]</div>
+    }
+    @if (TempData["MensajeError"] != null)
+    {
+        <div class="alert alert-danger">@TempData["MensajeError"]</div>
+    }
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nombre completo</th>
+                    <th>Correo</th>
+                    <th>Rol actual</th>
+                    <th>Estado</th>
+                    <th>Cambiar rol</th>
+                    <th>Habilitar / Deshabilitar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var u in Model)
+                {
+                    <tr>
+                        <td>@u.NombreCompleto</td>
+                        <td>@u.Email</td>
+                        <td><span class="badge bg-primary">@u.Rol</span></td>
+                        <td>
+                            @if (u.Activo)
+                            {
+                                <span class="badge bg-success">Habilitada</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Deshabilitada</span>
+                            }
+                        </td>
+                        <td>
+                            <form asp-action="CambiarRol" method="post" class="d-flex gap-2">
+                                <input type="hidden" name="usuarioId" value="@u.Id" />
+                                <select name="nuevoRol" class="form-select form-select-sm">
+                                    <option value="@DbInitializer.RolCliente" selected="@(u.Rol == DbInitializer.RolCliente)">@DbInitializer.RolCliente</option>
+                                    <option value="@DbInitializer.RolAdministrador" selected="@(u.Rol == DbInitializer.RolAdministrador)">@DbInitializer.RolAdministrador</option>
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Aplicar</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form asp-action="CambiarEstado" method="post">
+                                <input type="hidden" name="usuarioId" value="@u.Id" />
+                                @if (u.Activo)
+                                {
+                                    <input type="hidden" name="activo" value="false" />
+                                    <button type="submit" class="btn btn-sm btn-warning">Deshabilitar</button>
+                                }
+                                else
+                                {
+                                    <input type="hidden" name="activo" value="true" />
+                                    <button type="submit" class="btn btn-sm btn-success">Habilitar</button>
+                                }
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -20,6 +20,35 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        @using Taller.Datos.Seed
+                    <ul class="navbar-nav ms-auto align-items-center gap-2">
+                            @if (User.Identity != null && User.Identity.IsAuthenticated)
+                            {
+                                @if (User.IsInRole(DbInitializer.RolAdministrador))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark fw-semibold" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
+                                    </li>
+                                }
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Account" asp-action="Profile">Mi Perfil (@User.Identity.Name)</a>
+                                </li>
+                                <li class="nav-item">
+                                    <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Cerrar Sesión</button>
+                                    </form>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="btn btn-sm btn-primary" asp-controller="Account" asp-action="Register">Registrarse</a>
+                                </li>
+                            }
+                        </ul>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
