@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Taller.Datos/Taller.Datos.csproj" />
+  <Project Path="Taller.Negocio/Taller.Negocio.csproj" />
+  <Project Path="Taller.Presentacion/Taller.Presentacion.csproj" />
+</Solution>
